@@ -28,11 +28,12 @@ public class ToDoListServlet extends HttpServlet {
 		String methodValue = req.getParameter("method");
 
 		boolean isInsertTodo = "INSERT_TODO".equals(methodValue);
-		boolean isUpdateTodo = "UPDATE_TODO".equals(methodValue);
+		boolean isUpdateCompleteTodo = "UPDATE_COMPLETE_TODO".equals(methodValue);
+		boolean isUpdateActiveTodo = "UPDATE_ACTIVE_TODO".equals(methodValue);
 		boolean isDeleteTodo = "DELETE_TODO".equals(methodValue);
-		
+
 		User user = (User) req.getSession().getAttribute("LOGIN_USER");
-		
+
 		if (isInsertTodo) {
 			String description = req.getParameter("description");
 			String noOfDaysStr = req.getParameter("numberOfDays");
@@ -50,10 +51,8 @@ public class ToDoListServlet extends HttpServlet {
 			} else {
 				req.setAttribute("ERROR_MESSAGE", Message.UNSUCCESSFUL_INSERTION);
 			}
-		} else if (isUpdateTodo) {
+		} else if (isUpdateCompleteTodo || isUpdateActiveTodo) {
 			String todoOidStr = req.getParameter("oid");
-			String active = req.getParameter("active");
-			String completed = req.getParameter("completed");
 
 			long todoOid = 0;
 			if (todoOidStr != null) {
@@ -62,8 +61,11 @@ public class ToDoListServlet extends HttpServlet {
 
 			Todo todo = DBUtil.getTodo(todoOid, user.getOid());
 			if (todo != null) {
-				todo.setCompleted(Boolean.parseBoolean(completed));
-				todo.setActive(Boolean.parseBoolean(active));
+				if (isUpdateCompleteTodo) {
+					todo.setCompleted(!todo.isCompleted());
+				} else if (isUpdateActiveTodo) {
+					todo.setActive(!todo.isActive());
+				}
 
 				if (DBUtil.updateTodo(todo)) {
 					req.setAttribute("MESSAGE", Message.SUCCESSFUL_UPDATION);
