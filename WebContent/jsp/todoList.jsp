@@ -36,6 +36,9 @@
 			document.getElementById("oid").value = oid;
 			document.getElementById("todolist").submit();
 		}
+		function logoutUser() {
+			window.location.href="./login?logout=LOGOUT"
+		}
 	</script>
 
 	<%
@@ -49,7 +52,6 @@
 	</div>
 	<%
 		}
-
 		if (errorMessage != null) {
 	%>
 	<div class="alert alert-danger" role="alert">
@@ -58,7 +60,14 @@
 	<%
 		}
 	%>
-
+	<div class="container">
+		<div class="row">
+		<div class="col">&nbsp;</div><div class="col">&nbsp;</div>
+			<div class="col">
+				<input type="button" value="logout" onClick="logoutUser()"/>
+			</div>
+		</div>
+	</div>
 	<div class="container">
 		<form id="todolist" action="todoList" method="post">
 			<div class="row">
@@ -84,12 +93,14 @@
 								for (Todo todo : todoList) {
 						%>
 						<tr>
-							<td scope="row"><input type="checkbox" name="completed" <%=todo.isCompleted() ? "checked": ""%>
+							<td scope="row"><input type="checkbox" name="completed"
+								<%=todo.isCompleted() ? "checked" : ""%>
 								value="<%=todo.getOid()%>"
 								onChange="onTodoComplete(<%=todo.getOid()%>)"></td>
 							<td><%=todo.getDescription()%></td>
 							<td><%=todo.getNumberOfDays()%></td>
-							<td><input type="button" value='<%=todo.isActive() ? "Deactivate": "Activate"%>'
+							<td><input type="button"
+								value='<%=todo.isActive() ? "Deactivate" : "Activate"%>'
 								onClick="onTodoActive(<%=todo.getOid()%>)"></td>
 							<td><input type="button" value="Delete"
 								onclick="onTodoDelete(<%=todo.getOid()%>)"> &nbsp;<input

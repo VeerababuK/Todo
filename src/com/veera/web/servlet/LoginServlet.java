@@ -18,14 +18,18 @@ import com.veera.util.Message;
 public class LoginServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 3571027017506324967L;
-	
+
 	Logger logger = Logger.getLogger(LoginServlet.class);
-	
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String logout = req.getParameter("logout");
+		if ("LOGOUT".equals(logout)) {
+			req.getSession().invalidate();
+			req.setAttribute("Message", Message.USER_SUCCESSFULLY_LOGGED_OUT);
+		}
+		logger.debug("Login servlet get method");
 		RequestDispatcher requestDispatcher = req.getRequestDispatcher("/index.jsp");
-		System.out.println("success***GET****");
 		requestDispatcher.forward(req, resp);
 	}
 
@@ -41,19 +45,15 @@ public class LoginServlet extends HttpServlet {
 				User user = DBUtil.getUser(userName, password);
 				HttpSession session = req.getSession();
 				session.setAttribute("LOGIN_USER", user);
-				logger.debug("this is a debug log message todoList");
-				System.out.println("success********");
+				logger.debug("Login servlet post method success");
 				RequestDispatcher requestDispatcher = req.getRequestDispatcher("/todoList");
 				requestDispatcher.forward(req, resp);
 			} else {
-				logger.debug("this is a debug log message /");
-				System.out.println("success########");
+				logger.debug("Login servlet post method default");
 				RequestDispatcher requestDispatcher = req.getRequestDispatcher("/");
 				req.setAttribute("ERROR_MESSAGE", Message.LOGIN_ERROR_MESSAGE);
 				requestDispatcher.forward(req, resp);
 			}
 		}
-
 	}
-
 }
