@@ -36,7 +36,7 @@ public class ToDoListServlet extends HttpServlet {
 
 		if (isInsertTodo) {
 			String description = req.getParameter("description");
-			String noOfDaysStr = req.getParameter("numberOfDays");
+			String noOfDaysStr = req.getParameter("noOfDays");
 			int numberOfDays = 0;
 			if (noOfDaysStr != null) {
 				numberOfDays = Integer.parseInt(noOfDaysStr);
@@ -46,7 +46,7 @@ public class ToDoListServlet extends HttpServlet {
 			todo.setDescription(description);
 			todo.setNumberOfDays(numberOfDays);
 
-			if (DBUtil.insertTodo(todo)) {
+			if (DBUtil.insertTodo(todo, user)) {
 				req.setAttribute("MESSAGE", Message.SUCCESSFUL_INSERTION);
 			} else {
 				req.setAttribute("ERROR_MESSAGE", Message.UNSUCCESSFUL_INSERTION);
@@ -91,7 +91,7 @@ public class ToDoListServlet extends HttpServlet {
 
 		List<Todo> todoList = DBUtil.getTodoList(user.getOid());
 		req.setAttribute("TODOLIST", todoList);
-		RequestDispatcher requestDispatcher = req.getRequestDispatcher("todoList");
+		RequestDispatcher requestDispatcher = req.getRequestDispatcher("jsp/todoList.jsp");
 		requestDispatcher.forward(req, resp);
 	}
 

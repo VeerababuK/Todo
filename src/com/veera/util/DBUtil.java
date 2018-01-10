@@ -7,14 +7,19 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.veera.bean.Todo;
 import com.veera.bean.User;
+import com.veera.web.servlet.LoginServlet;
 
 public class DBUtil {
 
+	public static Logger logger = Logger.getLogger(LoginServlet.class);
+
 	public static final Connection getDatabaseConnection() throws Exception {
 		Class.forName("com.mysql.jdbc.Driver");
-		return DriverManager.getConnection("jdbc:mysql://localhost:3306/todo", "root", "root");
+		return DriverManager.getConnection("jdbc:mysql://localhost:3306/todo", "root", "admin");
 	}
 
 	public static final boolean isValidUser(String userName, String password) {
@@ -24,6 +29,7 @@ public class DBUtil {
 					.prepareStatement("SELECT * FROM LOGIN WHERE USER_NAME = ? AND PASSWORD = ?");
 			preparedStatement.setString(1, userName);
 			preparedStatement.setString(2, password);
+			logger.debug("SQL Statement : " + preparedStatement.toString());
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				return true;
@@ -47,6 +53,7 @@ public class DBUtil {
 				user.setOid(resultSet.getLong("OID"));
 				user.setUserName(resultSet.getString("USER_NAME"));
 				user.setPassword(resultSet.getString("PASSWORD"));
+				logger.debug("SQL Statement : " + preparedStatement.toString());
 
 				return user;
 			}
@@ -56,16 +63,17 @@ public class DBUtil {
 		return null;
 	}
 
-	public static final boolean insertTodo(Todo todo) {
+	public static final boolean insertTodo(Todo todo, User user) {
 		try {
 			Connection connection = getDatabaseConnection();
-			PreparedStatement preparedStatement = connection
-					.prepareStatement("INSERT INTO TODO(TODO_DESC, DAYS, COMPLETED, ACTIVE) VALUES (?,?,?,?,?)");
+			PreparedStatement preparedStatement = connection.prepareStatement(
+					"INSERT INTO TODO(TODO_DESC, DAYS, COMPLETED, ACTIVE, LOGIN_OID) VALUES (?,?,?,?,?)");
 			preparedStatement.setString(1, todo.getDescription());
 			preparedStatement.setInt(2, todo.getNumberOfDays());
 			preparedStatement.setBoolean(3, false);
-			preparedStatement.setBoolean(5, true);
-
+			preparedStatement.setBoolean(4, true);
+			preparedStatement.setLong(5, user.getOid());
+			logger.debug("SQL Statement : " + preparedStatement.toString());
 			return preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -82,7 +90,7 @@ public class DBUtil {
 			preparedStatement.setBoolean(1, todo.isCompleted());
 			preparedStatement.setBoolean(2, todo.isActive());
 			preparedStatement.setLong(3, todo.getOid());
-
+			logger.debug("SQL Statement : " + preparedStatement.toString());
 			return preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,8 +103,8 @@ public class DBUtil {
 		try {
 			Connection connection = getDatabaseConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM TODO WHERE OID = ?");
-			preparedStatement.setLong(3, todo.getOid());
-
+			preparedStatement.setLong(1, todo.getOid());
+			logger.debug("SQL Statement : " + preparedStatement.toString());
 			return preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -109,7 +117,7 @@ public class DBUtil {
 		try {
 			Connection connection = getDatabaseConnection();
 			PreparedStatement preparedStatement = connection
-					.prepareStatement("SELECT * FROM TODO WHERE OID = ? LOGIN_OID = ?");
+					.prepareStatement("SELECT * FROM TODO WHERE OID = ? AND LOGIN_OID = ?");
 			preparedStatement.setLong(1, todoOid);
 			preparedStatement.setLong(2, loginOid);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -120,6 +128,7 @@ public class DBUtil {
 				todo.setNumberOfDays(resultSet.getInt("DAYS"));
 				todo.setCompleted(resultSet.getBoolean("COMPLETED"));
 				todo.setActive(resultSet.getBoolean("ACTIVE"));
+				logger.debug("SQL Statement : " + preparedStatement.toString());
 				return todo;
 			}
 		} catch (Exception e) {
@@ -145,6 +154,7 @@ public class DBUtil {
 				todo.setActive(resultSet.getBoolean("ACTIVE"));
 				todoList.add(todo);
 			}
+			logger.debug("SQL Statement : " + preparedStatement.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

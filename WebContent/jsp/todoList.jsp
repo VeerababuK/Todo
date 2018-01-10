@@ -1,3 +1,5 @@
+<%@ page import="java.util.List"%>
+<%@ page import="com.veera.bean.Todo"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -6,11 +8,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
 <title>Manage Todo list</title>
 </head>
 <body>
@@ -56,7 +60,7 @@
 	%>
 
 	<div class="container">
-		<form id="todolist" action="todolist" method="post">
+		<form id="todolist" action="todoList" method="post">
 			<div class="row">
 				<div class="col">
 					<h1>Todo's list</h1>
@@ -74,16 +78,39 @@
 						</tr>
 					</thead>
 					<tbody>
+						<%
+							List<Todo> todoList = (List<Todo>) request.getAttribute("TODOLIST");
+							if (todoList != null && todoList.size() > 0) {
+								for (Todo todo : todoList) {
+						%>
 						<tr>
-							<td scope="row"><input type="checkbox" name="completed"
-								value=""></td>
-							<td>Description</td>
-							<td>Days</td>
-							<td><input type="button" value="Active"></td>
-							<td><input type="button" value="Delete"> &nbsp;<input
+							<td scope="row"><input type="checkbox" name="completed" <%=todo.isCompleted() ? "checked": ""%>
+								value="<%=todo.getOid()%>"
+								onChange="onTodoComplete(<%=todo.getOid()%>)"></td>
+							<td><%=todo.getDescription()%></td>
+							<td><%=todo.getNumberOfDays()%></td>
+							<td><input type="button" value='<%=todo.isActive() ? "Deactivate": "Activate"%>'
+								onClick="onTodoActive(<%=todo.getOid()%>)"></td>
+							<td><input type="button" value="Delete"
+								onclick="onTodoDelete(<%=todo.getOid()%>)"> &nbsp;<input
 								type="hidden" id="method" name="method"><input
 								type="hidden" id="oid" name="oid"></td>
 						</tr>
+						<%
+							}
+							} else {
+						%>
+						<tr>
+							<td scope="row">&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+
+						<%
+							}
+						%>
 
 					</tbody>
 				</table>
@@ -93,7 +120,7 @@
 	</div>
 
 	<div class="container">
-		<form id="todoListAdd" action="todolist" method="post">
+		<form id="todoListAdd" action="todoList" method="post">
 			<div class="row">
 				<div class="col">
 					<h1>Add Todo</h1>
