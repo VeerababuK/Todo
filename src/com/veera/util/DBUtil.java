@@ -15,7 +15,19 @@ import com.veera.web.servlet.LoginServlet;
 
 public class DBUtil {
 
-	public static Logger logger = Logger.getLogger(LoginServlet.class);
+	public static final Logger logger = Logger.getLogger(LoginServlet.class);
+
+	// LOGIN table fields
+	public static final String LOGIN_OID = "OID";
+	public static final String LOGIN_USER_NAME = "USER_NAME";
+	public static final String LOGIN_PASSWORD = "PASSWORD";
+	// TODO table fields
+	public static final String TODO_OID = "OID";
+	public static final String TODO_DESCRIPTION = "TODO_DESC";
+	public static final String TODO_DAYS = "DAYS";
+	public static final String TODO_ACTIVE = "ACTIVE";
+	public static final String TODO_COMPLETED = "COMPLETED";
+	public static final String TODO_FK_LOGIN_OID = "LOGIN_OID";
 
 	public static final Connection getDatabaseConnection() throws Exception {
 		Class.forName("com.mysql.jdbc.Driver");
@@ -50,9 +62,9 @@ public class DBUtil {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				User user = new User();
-				user.setOid(resultSet.getLong("OID"));
-				user.setUserName(resultSet.getString("USER_NAME"));
-				user.setPassword(resultSet.getString("PASSWORD"));
+				user.setOid(resultSet.getLong(LOGIN_OID));
+				user.setUserName(resultSet.getString(LOGIN_USER_NAME));
+				user.setPassword(resultSet.getString(LOGIN_PASSWORD));
 				logger.debug("SQL Statement : " + preparedStatement.toString());
 
 				return user;
@@ -123,11 +135,11 @@ public class DBUtil {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				Todo todo = new Todo();
-				todo.setOid(resultSet.getLong("OID"));
-				todo.setDescription(resultSet.getString("TODO_DESC"));
-				todo.setNumberOfDays(resultSet.getInt("DAYS"));
-				todo.setCompleted(resultSet.getBoolean("COMPLETED"));
-				todo.setActive(resultSet.getBoolean("ACTIVE"));
+				todo.setOid(resultSet.getLong(TODO_OID));
+				todo.setDescription(resultSet.getString(TODO_DESCRIPTION));
+				todo.setNumberOfDays(resultSet.getInt(TODO_DAYS));
+				todo.setCompleted(resultSet.getBoolean(TODO_COMPLETED));
+				todo.setActive(resultSet.getBoolean(TODO_ACTIVE));
 				logger.debug("SQL Statement : " + preparedStatement.toString());
 				return todo;
 			}
@@ -147,11 +159,11 @@ public class DBUtil {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				Todo todo = new Todo();
-				todo.setOid(resultSet.getLong("OID"));
-				todo.setDescription(resultSet.getString("TODO_DESC"));
-				todo.setNumberOfDays(resultSet.getInt("DAYS"));
-				todo.setCompleted(resultSet.getBoolean("COMPLETED"));
-				todo.setActive(resultSet.getBoolean("ACTIVE"));
+				todo.setOid(resultSet.getLong(TODO_OID));
+				todo.setDescription(resultSet.getString(TODO_DESCRIPTION));
+				todo.setNumberOfDays(resultSet.getInt(TODO_DAYS));
+				todo.setCompleted(resultSet.getBoolean(TODO_COMPLETED));
+				todo.setActive(resultSet.getBoolean(TODO_ACTIVE));
 				todoList.add(todo);
 			}
 			logger.debug("SQL Statement : " + preparedStatement.toString());

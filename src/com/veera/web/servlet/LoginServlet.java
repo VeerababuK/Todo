@@ -19,7 +19,7 @@ public class LoginServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 3571027017506324967L;
 
-	Logger logger = Logger.getLogger(LoginServlet.class);
+	private static final Logger logger = Logger.getLogger(LoginServlet.class);
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.veera.bean.Todo;
 import com.veera.bean.User;
 import com.veera.util.DBUtil;
@@ -17,6 +19,8 @@ import com.veera.util.Message;
 public class ToDoListServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1300941880392413959L;
+
+	private static final Logger logger = Logger.getLogger(LoginServlet.class);
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -48,8 +52,10 @@ public class ToDoListServlet extends HttpServlet {
 
 			if (DBUtil.insertTodo(todo, user)) {
 				req.setAttribute("MESSAGE", Message.SUCCESSFUL_INSERTION);
+				logger.debug(Message.SUCCESSFUL_INSERTION);
 			} else {
 				req.setAttribute("ERROR_MESSAGE", Message.UNSUCCESSFUL_INSERTION);
+				logger.debug(Message.UNSUCCESSFUL_INSERTION);
 			}
 		} else if (isUpdateCompleteTodo || isUpdateActiveTodo) {
 			String todoOidStr = req.getParameter("oid");
@@ -69,8 +75,10 @@ public class ToDoListServlet extends HttpServlet {
 
 				if (DBUtil.updateTodo(todo)) {
 					req.setAttribute("MESSAGE", Message.SUCCESSFUL_UPDATION);
+					logger.debug(Message.SUCCESSFUL_UPDATION);
 				} else {
 					req.setAttribute("ERROR_MESSAGE", Message.UNSUCCESSFUL_UPDATION);
+					logger.debug(Message.UNSUCCESSFUL_UPDATION);
 				}
 			}
 		} else if (isDeleteTodo) {
@@ -84,13 +92,16 @@ public class ToDoListServlet extends HttpServlet {
 			Todo todo = DBUtil.getTodo(todoOid, user.getOid());
 			if (todo != null && DBUtil.deleteTodo(todo)) {
 				req.setAttribute("MESSAGE", Message.SUCCESSFUL_DELETION);
+				logger.debug(Message.SUCCESSFUL_DELETION);
 			} else {
 				req.setAttribute("ERROR_MESSAGE", Message.UNSUCCESSFUL_DELETION);
+				logger.debug(Message.UNSUCCESSFUL_DELETION);
 			}
 		}
 
-		List<Todo> todoList = DBUtil.getTodoList(user.getOid());
+		List<Todo> todoList = DBUtil.getTodoList(user.getOid());		
 		req.setAttribute("TODOLIST", todoList);
+		logger.debug("TODOLIST data size : " + todoList.size());
 		RequestDispatcher requestDispatcher = req.getRequestDispatcher("jsp/todoList.jsp");
 		requestDispatcher.forward(req, resp);
 	}
