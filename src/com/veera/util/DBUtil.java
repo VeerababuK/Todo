@@ -7,7 +7,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.veera.bean.Todo;
 import com.veera.bean.User;
@@ -15,7 +16,7 @@ import com.veera.web.servlet.LoginServlet;
 
 public class DBUtil {
 
-	public static final Logger logger = Logger.getLogger(LoginServlet.class);
+	public static final Logger logger = LogManager.getLogger(LoginServlet.class);
 
 	// LOGIN table fields
 	public static final String LOGIN_OID = "OID";

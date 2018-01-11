@@ -9,7 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.veera.bean.User;
 import com.veera.util.DBUtil;
@@ -19,7 +20,7 @@ public class LoginServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 3571027017506324967L;
 
-	private static final Logger logger = Logger.getLogger(LoginServlet.class);
+	private static final Logger logger = LogManager.getLogger(LoginServlet.class);
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
