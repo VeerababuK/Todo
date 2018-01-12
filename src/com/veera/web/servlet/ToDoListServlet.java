@@ -43,8 +43,13 @@ public class ToDoListServlet extends HttpServlet {
 			String description = req.getParameter("description");
 			String noOfDaysStr = req.getParameter("noOfDays");
 			int numberOfDays = 0;
-			if (noOfDaysStr != null) {
-				numberOfDays = Integer.parseInt(noOfDaysStr);
+			try {
+				if (noOfDaysStr != null) {
+					numberOfDays = Integer.parseInt(noOfDaysStr);
+				}
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 
 			Todo todo = new Todo();
@@ -100,7 +105,7 @@ public class ToDoListServlet extends HttpServlet {
 			}
 		}
 
-		List<Todo> todoList = DBUtil.getTodoList(user.getOid());		
+		List<Todo> todoList = DBUtil.getTodoList(user.getOid());
 		req.setAttribute("TODOLIST", todoList);
 		logger.debug("TODOLIST data size : " + todoList.size());
 		RequestDispatcher requestDispatcher = req.getRequestDispatcher("jsp/todoList.jsp");

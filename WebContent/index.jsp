@@ -19,32 +19,32 @@
 	<div class="container">
 		<form action="login" method="post">
 			<div class="row">
-				<div class="col">
+				<div class="col-sm-2">
 					<h1>Login</h1>
 				</div>
-				<div class="col">&nbsp;</div>
+				<div class="col-sm-2">&nbsp;</div>
 			</div>
 			<div class="row">
-				<div class="col">
+				<div class="col-sm-2">
 					<label for="user_name">User Name</label>
 				</div>
-				<div class="col">
+				<div class="col-sm-2">
 					<input type="text" id="user_name" name="user_name">
 				</div>
 			</div>
 			<div class="row">
-				<div class="col">
+				<div class="col-sm-2">
 					<label for="password">Password</label>
 				</div>
-				<div class="col">
+				<div class="col-sm-2">
 					<input type="password" id="password" name="password">
 				</div>
 			</div>
 			<div class="row">
-				<div class="col">
+				<div class="col-sm-2">
 					&nbsp;<input type="hidden" id="method" name="method" value='LOGIN'>
 				</div>
-				<div class="col">
+				<div class="col-sm-2">
 					<input type="submit" value="LOGIN">
 				</div>
 			</div>

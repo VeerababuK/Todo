@@ -62,8 +62,8 @@
 	%>
 	<div class="container-fluid">
 		<div class="row">
-		<div class="col">&nbsp;</div><div class="col">&nbsp;</div>
-			<div class="col">
+		<div class="col-sm-4">&nbsp;</div><div class="col-sm-4">&nbsp;</div>
+			<div class="col-sm-4 align-items-end">
 				<input type="button" value="logout" onClick="logoutUser()"/>
 			</div>
 		</div>
@@ -71,13 +71,13 @@
 	<div class="container">
 		<form id="todolist" action="todoList" method="post">
 			<div class="row">
-				<div class="col">
+				<div class="col-sm-5">
 					<h1>Todo's list</h1>
 				</div>
 			</div>
 			<div class="row">
-				<table class="table">
-					<thead>
+				<table class="table table-sm table-bordered table-hover">
+					<thead class="thead-inverse">
 						<tr>
 							<th scope="col">Completed</th>
 							<th scope="col">Description</th>
@@ -133,33 +133,32 @@
 	<div class="container">
 		<form id="todoListAdd" action="todoList" method="post">
 			<div class="row">
-				<div class="col">
+				<div class="col-sm-4">
 					<h1>Add Todo</h1>
-				</div>
-				<div class="col">&nbsp;</div>
+				</div>				
 			</div>
 			<div class="row">
-				<div class="col">
+				<div class="col-sm-2">
 					<label for="description">Description</label>
 				</div>
-				<div class="col">
+				<div class="col-sm-2">
 					<textarea id="description" name="description"></textarea>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col">
+				<div class="col-sm-2">
 					<label for="noOfDays">No. of days</label>
 				</div>
-				<div class="col">
+				<div class="col-sm-2">
 					<input type="text" id="noOfDays" name="noOfDays">
 				</div>
 			</div>
 			<div class="row">
-				<div class="col">
+				<div class="col-sm-2">
 					&nbsp;<input type="hidden" id="method" name="method"
 						value='INSERT_TODO'>
 				</div>
-				<div class="col">
+				<div class="col-sm-2">
 					<input type="submit" value="ADD">
 				</div>
 			</div>
