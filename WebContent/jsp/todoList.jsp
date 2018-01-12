@@ -1,5 +1,6 @@
 <%@ page import="java.util.List"%>
 <%@ page import="com.veera.bean.Todo"%>
+<%@ page import="com.veera.bean.User"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -42,6 +43,7 @@
 	</script>
 
 	<%
+		User user = (User) request.getSession().getAttribute("LOGIN_USER");
 		String message = (String) request.getAttribute("MESSAGE");
 		String errorMessage = (String) request.getAttribute("ERROR_MESSAGE");
 
@@ -62,9 +64,10 @@
 	%>
 	<div class="container-fluid">
 		<div class="row">
-		<div class="col-sm-4">&nbsp;</div><div class="col-sm-4">&nbsp;</div>
+			<div class="col-sm-4">&nbsp;</div>
+			<div class="col-sm-4">&nbsp;</div>
 			<div class="col-sm-4 align-items-end">
-				<input type="button" value="logout" onClick="logoutUser()"/>
+				<%=user.getUserName()%>&nbsp;<input type="button" value="Logout" onClick="logoutUser()" />
 			</div>
 		</div>
 	</div>
@@ -135,7 +138,7 @@
 			<div class="row">
 				<div class="col-sm-4">
 					<h1>Add Todo</h1>
-				</div>				
+				</div>
 			</div>
 			<div class="row">
 				<div class="col-sm-2">
